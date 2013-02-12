@@ -1,1 +1,2 @@
-../requirements/prod.txt
+-r .requirements/common.txt
+dj_database_url
