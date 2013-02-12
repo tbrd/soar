@@ -1,0 +1,6 @@
+# This file also installs all requirements in common.txt
+# Install these packages in your (virtual) environment by executing:
+# $ pip install -r requirements/dev.txt
+-r ./common.txt
+pdbpp
+django-debug-toolbar==0.9.4
