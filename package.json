@@ -5,6 +5,6 @@
   , "homepage": "http://flighttodo.herokuapp.com/"
   , "author": "Cameron Stitt"
   , "dependencies": {
-      "bower": "~0.7.0"
+      "bower": "0.7.0"
   }
 }

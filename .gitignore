@@ -4,3 +4,4 @@
 local_settings.py
 static/components/*
 .DS_Store
+node_modules/*
