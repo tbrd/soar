@@ -15,7 +15,7 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'flight_todo_pro',                      # Or path to database file if using sqlite3.
         'USER': 'soar',                      # Not used with sqlite3.
         'PASSWORD': 'flightisfun',                  # Not used with sqlite3.
