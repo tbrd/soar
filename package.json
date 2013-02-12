@@ -1,0 +1,10 @@
+{
+    "name": "soar"
+  , "description": "Doing stuff is fun"
+  , "version": "1.0.0"
+  , "homepage": "http://flighttodo.herokuapp.com/"
+  , "author": "Cameron Stitt"
+  , "dependencies": {
+      "bower": "~0.7.0"
+  }
+}
