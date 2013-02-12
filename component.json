@@ -1,0 +1,10 @@
+{
+  "name": "Flights-Todo",
+  "version": "1.0.0",
+  "dependencies": {
+    "bootstrap": "http://twitter.github.com/bootstrap/assets/bootstrap.zip",
+    "handlebars": "~1.0.0-rc.1",
+    "require": "2.1.4",
+    "flight": "git@github.com:cam-stitt/flight.git#1.0.1"
+  }
+}
