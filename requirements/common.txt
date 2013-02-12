@@ -7,6 +7,7 @@ django-bootstrap-form
 factory-boy
 unittest2
 django-model-utils
+tastypie
 -e git://github.com/causes/django-factory_boy.git#egg=django-factory_boy
 -e git://github.com/eldarion/idios.git#egg=idios
 -e git://github.com/matiasherranz/django-notification.git#egg=django-notification
