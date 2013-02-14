@@ -168,6 +168,6 @@ LOGGING = {
     }
 }
 
-if os.environ.get('MYSITE_PRODUCTION', True):
+if not os.environ.get('MYSITE_PRODUCTION', False):
     import dj_database_url
     DATABASES['default'] =  dj_database_url.config()

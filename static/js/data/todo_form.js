@@ -15,15 +15,14 @@ define(
     function todoForm() {
 			this.template = Handlebars.compile(templates.todoItem);
 			
-			this.emptyTemplate = Handlebars.compile(templates.emptyItem);
+			this.emptyTemplate = Handlebars.compile(templates.emptyItem);      
       
       this.loadTodos = function(e, data) {
-        var component = this,
-        ownerId = $("#ownerId").val();
+        var component = this
         $.ajax({
           url: 'api/v1/todo',
           dataType: 'JSON',
-          data: JSON.stringify({"owner": ownerId}),
+          data: JSON.stringify({}),
           processData: false,
           contentType: "application/json",
           type: 'GET',
