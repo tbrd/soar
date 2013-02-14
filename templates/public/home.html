@@ -4,14 +4,12 @@
 <div class="form-todo">
   <h2 class="form-todo-heading">Todos</h2>
 	<input type="text" id="newTodo" class="input-block-level" placeholder="Get stuff done">
-	<legend>Your Items</legend>
+  <input type="hidden" id="ownerId" value="{{owner}}">
+	<div class="actions">
+    <label class="checkbox"><input type="checkbox">Mark all as done</label>
+    <a class="remove-all pull-right" href="#">Remove all</a>
+  </div>
 	<ul id="items">
-    {% if todos|length <= 0 %}
-    <li class='empty'>There are no items. Add one above.</li>
-    {% endif %}
-		{% for todo in todos  %}
-    <li id="todo_{{todo.id}}" data-id="{{todo.id}}"><label class="checkbox"><input type='checkbox'>{{todo.title}}</label><a class='remove' href='#'><i class='icon-remove'></i></a></li>
-		{% endfor %}
 	</ul>
 </div>
 {% endblock content %}

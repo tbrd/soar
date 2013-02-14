@@ -3,18 +3,18 @@
 define(
 
   [
-		'js/ui/todo_form',
-		'js/data/todo_form'
+		'js/data/todo_form',
+		'js/ui/todo_form'
   ],
 
   function(
-		ToDoFormUI,
-		ToDoFormData
+    ToDoFormData,
+		ToDoFormUI
 		) {
 
     function initialize() {
+      ToDoFormData.attachTo(document);
 			ToDoFormUI.attachTo(document);
-			ToDoFormData.attachTo(document);
     }
 
     return initialize;

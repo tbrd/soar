@@ -32,20 +32,38 @@
 }
 			
 #items li {
-	padding: 10px;
+	padding: 10px 0;
 	position: relative;
 }
-			
-#items li:hover {
-	background: #eee;
-}
 
-#items li.empty:hover {
-  background: none;
+#items li.done {
+  text-decoration: line-through;
 }
 			
 .remove {
 	position: absolute;
 	right: 5px;
 	top: 25%;
+}
+
+.actions {
+  position: relative;
+  overflow: auto;
+  padding-bottom: 10px;
+  display: none;
+}
+
+.remove-all {
+  position: absolute;
+  top: 0;
+  right: 5px;
+}
+
+.remove-all.disabled, .remove-all.disabled:hover {
+  color: #ccc;
+}
+
+#links {
+  margin-top: 60px;
+  text-align: center;
 }

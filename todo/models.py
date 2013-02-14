@@ -6,6 +6,7 @@ class Todo(TimestampModel):
     title = models.CharField(max_length=100)
     done = models.BooleanField()
     position = models.IntegerField()
+    owner = models.CharField(max_length=200)
     
     def save(self, *args, **kwargs):
         if not self.pk:
