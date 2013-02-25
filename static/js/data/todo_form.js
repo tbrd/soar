@@ -3,22 +3,17 @@
 define(
 
   [
-		'components/flight/lib/component',
-		'js/templates',
-		'components/handlebars/handlebars'
+    'components/flight/lib/component'
   ],
 
-  function(defineComponent, templates) {
-		
-		return defineComponent(todoForm);
-		
+  function(defineComponent) {
+
+    return defineComponent(todoForm);
+
     function todoForm() {
-			this.template = Handlebars.compile(templates.todoItem);
-			
-			this.emptyTemplate = Handlebars.compile(templates.emptyItem);      
-      
+
       this.loadTodos = function(e, data) {
-        var component = this
+        var component = this;
         $.ajax({
           url: 'api/v1/todo',
           dataType: 'JSON',
@@ -27,38 +22,30 @@ define(
           contentType: "application/json",
           type: 'GET',
           success: function(data, status, xhr) {
-            if (data.objects.length > 0) {
-               $(".actions").show();
-            }
-            $.each(data.objects, function(index, value) {
-              var result = component.template(value);
-              
-              $("#items").append(result);
+            component.trigger(document, {
+              todos: data.objects
             });
           }
         });
       };
-			
+
 			this.createTodo = function(e, data) {
-				var component = this,
-        ownerId = $("#ownerId").val();
+				var component = this;
 				$.ajax({
 					url: 'api/v1/todo/',
 					dataType: 'JSON',
-					data: JSON.stringify({"title": data.title, "done": false, "owner": ownerId}),
+					data: JSON.stringify({"title": data.title, "done": false, "owner": data.ownerId}),
 					processData: false,
 					contentType: "application/json",
 					type: 'POST',
 					success: function(data, status, xhr) {
-						var result = component.template(data);
-            
-            $(".actions").show();
-					
-						$("#items").prepend(result);
+						component.trigger('dataTodoCreated', {
+              todo: data
+            });
 					}
 				});
 			};
-			
+
 			this.removeTodos = function(e, data) {
 				var component = this;
 				$.each(data.ids, function(index, value) {
@@ -70,15 +57,14 @@ define(
 						contentType: "application/json",
 						type: 'DELETE',
 						success: function(data, status, xhr) {
-							$("#todo_" + value).remove();
-							if ($("#items").children().length <= 0) {
-                $(".actions").hide();
-							}
+              component.trigger('dataTodoRemoved', {
+                id: value
+              });
 						}
 					});
 				});
 			};
-      
+
       this.toggleDone = function(e, data) {
         var component = this;
         $.each(data.objects, function(index, value) {
@@ -90,12 +76,14 @@ define(
             contentType: "application/json",
             type: "PUT",
             success: function(data, status, xhr) {
-              $("#todo_" + value.id).toggleClass("done");
+              component.trigger('dataTodoDone', {
+                id: value.id
+              });
             }
           });
         });
       };
-			
+
 			this.after("initialize", function() {
         this.on("addTodo", this.createTodo);
 				this.on("removeTodos", this.removeTodos);
