@@ -3,17 +3,23 @@
 {% block content %}
 <div class="form-todo">
   <h2 class="form-todo-heading">Todos</h2>
-	<input type="text" id="newTodo" class="input-block-level" placeholder="Get stuff done">
-	<div class="actions">
+  <input type="text" id="newTodo" class="input-block-level" placeholder="Get stuff done">
+
+  <div class="actions">
     <label class="checkbox"><input type="checkbox">Mark all as done</label>
     <a class="remove-all pull-right" href="#">Remove all</a>
   </div>
-	<ul id="items">
-	</ul>
+
+  <ul id="items">
+  </ul>
+
 </div>
+
 <div id="details">
-  <p class="muted">Created by <br /><a href="http://blog.barepixel.com/">Cameron Stitt</a></p>
-  <p class="muted">Built with <a href="http://djangoproject.com">Django</a> &amp; <a href="http://twitter.github.com/flight/">Flight</a></p>
+  <p class="muted">Created by <br/><a href="http://blog.barepixel.com/">Cameron Stitt</a></p>
+
+  <p class="muted">Built with <a href="http://djangoproject.com">Django</a> &amp; <a
+          href="http://twitter.github.com/flight/">Flight</a></p>
   <a href="https://github.com/cam-stitt/soar" class="btn btn-inverse">GitHub</a>
 </div>
 {% endblock content %}

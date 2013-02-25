@@ -3,97 +3,113 @@
 define(
 
   [
-		'components/flight/lib/component',
+    'components/flight/lib/component',
     'js/templates',
     'components/handlebars/handlebars'
   ],
 
-  function(defineComponent, templates) {
+  function (defineComponent, templates) {
 
-		return defineComponent(todoForm);
+    return defineComponent(todoForm);
 
     function todoForm() {
-			this.defaultAttrs({
-				newTodoSelector: "#newTodo",
-				removeTodoSelector: ".remove",
-        removeAllSelector: ".remove-all",
+      this.defaultAttrs({
+        newTodoSelector: '#newTodo',
+        removeTodoSelector: '.remove',
+        removeAllSelector: '.remove-all',
         doneTodoSelector: 'li input[type="checkbox"]',
         doneAllSelector: '.actions input[type="checkbox"]',
         itemsContainerSelector: '#items',
-        itemSelector: '#items li',
+        itemSelector: '.item',
         actionsSelector: '.actions',
         ownerIdSelector: '#ownerId',
-        doneClass: 'done'
-			});
+        doneClass: 'done',
+        isDoneCheckboxSelector: '.is-done'
+      });
 
       this.template = Handlebars.compile(templates.todoItem);
 
-			this.createOnEnter = function(e) {
-				if (e.keyCode != 13) return;
-				var input = $(e.target);
-				if (!input.val()) return;
+      this.createOnEnter = function (e) {
+        if (e.keyCode != 13) return;
+        var input = $(e.target);
+        if (!input.val()) return;
         var $ownerId = this.select('ownerIdSelector');
 
-				this.trigger("addTodo", {title: input.val(), ownerId: $ownerId.val()});
+        this.trigger('addTodo', {title: input.val(), ownerId: $ownerId.val()});
 
-				input.val("");
-			};
+        input.val('');
+      };
 
-			this.removeTodo = function(e) {
-				this.trigger("removeTodos", { ids: [$(e.target).parent().parent().data('id')] });
-				e.preventDefault();
-			};
+      this.removeTodo = function (e) {
+        this.trigger('removeTodos', { ids: [$(e.target).parent().parent().data('id')] });
+        e.preventDefault();
+      };
 
-      this.removeAllTodos = function(e) {
+      this.removeAllTodos = function (e) {
         var ids = [];
-        if ($("#items .empty").length <= 0) {
-          this.select('itemSelector').each(function(index, value) {
-            ids.push($(value).data('id'));
-          });
-          this.trigger("removeTodos", { ids: ids});
+
+        this.select('itemSelector').each(function (index, value) {
+          ids.push($(value).data('id'));
+        });
+        if(ids.length > 0) {
+          this.trigger('removeTodos', { ids: ids});
         }
         e.preventDefault();
       };
 
-      this.toggleDone = function(e) {
-        this.trigger("done", { objects: [{"id": $(e.target).parent().parent().data('id'), "done": $(e.target).is(":checked")}] });
+      this.toggleDone = function (e) {
+        var $item = $(e.target).closest(this.attr.itemSelector);
+        var done = $(e.target).is(':checked');
+        this.trigger('done', {
+          objects: [
+            {
+              id: $item.data('id'),
+              done: done
+            }
+          ]
+        });
       };
 
-      this.toggleAllDone = function(e) {
+      this.toggleAllDone = function (e) {
         var objects = [];
         if ($(e.target).is(':checked')) {
-          this.select('itemSelector').each(function(index, value) {
-            if ($(value).hasClass('done')) return;
+          this.select('itemSelector').each(function (index, itemElement) {
+            var $item = $(itemElement);
+            if ($item.hasClass('done')) return;
+            objects.push({
+              id: $item.data('id'),
+              done: true
+            });
 
-            objects.push({"id": $(value).data('id'), "done": true});
-
-            $(value).find('input[type="checkbox"]').attr('checked', 'checked');
+            $item.find(this.attr.isDoneCheckboxSelector).attr('checked', 'checked');
           });
         } else {
-          this.select('itemSelector').each(function(index, item) {
+          this.select('itemSelector').each(function (index, item) {
             var $item = $(item);
-            if ($item.hasClass('done')) {
-              objects.push({"id": $(item).data('id'), "done": false});
-
-              $item.find('input[type="checkbox"]').removeAttr('checked');
+            if ($item.hasClass(this.attr.doneClass)) {
+              objects.push({
+                id: $(item).data('id'),
+                done: false
+              });
+              $item.find(this.attr.isDoneCheckboxSelector).removeAttr('checked');
             }
           });
         }
 
-        this.trigger("done", {objects: objects});
+        this.trigger('done', {objects: objects});
       };
 
-      this.handleTodosData = function(e, data) {
+      this.handleTodosData = function (e, data) {
         if (data.todos && data.todos.length > 0) {
           this.select('actionsSelector').show();
         }
-        $.each(data.todos, function(index, value) {
+        data.todos.forEach(function (value, index) {
           var result = this.template(value);
           this.select('itemsContainerSelector').append(result);
-        });
+        }, this);
       };
 
-      this.handleTodoCreated = function(e, data) {
+      this.handleTodoCreated = function (e, data) {
         var todo = data.todo;
         var result = this.template(todo);
 
@@ -102,19 +118,25 @@ define(
         this.select('itemsContainerSelector').prepend(result);
       };
 
-      this.handleTodoRemoved = function(e, data) {
-        $("#todo_" + data.id).remove();
+      this.getItemById = function (id) {
+        return this.select('itemSelector').filter(function () {
+          return $(this).data('id') === id;
+        });
+      };
+
+      this.handleTodoRemoved = function (e, data) {
+        this.getItemById(data.id).remove();
         if (this.select('itemSelector').length <= 0) {
           this.select('actionsSelector').hide();
         }
       };
 
-      this.handleTodoDone = function(e, data) {
-        $("#todo_" + data.id).toggleClass(this.attr.doneClass);
+      this.handleTodoDone = function (e, data) {
+        this.getItemById(data.id).toggleClass(this.attr.doneClass);
       };
 
-      this.after("initialize", function() {
-        this.on("keypress", {
+      this.after('initialize', function () {
+        this.on('keypress', {
           newTodoSelector: this.createOnEnter
         });
 
